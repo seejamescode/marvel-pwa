@@ -4,15 +4,11 @@ import PageTitle from "../components/PageTitle";
 const Index = ({ posts }) => (
   <>
     <PageTitle>Hello, world.</PageTitle>
-    <p>
-      Next.js PWA Boilerplate starts your progressive web app off with a perfect
-      Google Lighthouse score. To see this in action, open this website with
-      Chrome, go to the “Audits” tab in dev tools, and click “Run audit”.
-    </p>
+    <p>Explore the characters of Marvel Comics.</p>
     <p>
       Check out the{" "}
       <a
-        href="https://github.com/pingboard/next-pwa-boilerplate"
+        href="https://github.com/seejamescode/marvel-pwa"
         rel="noopener noreferrer"
         target="_blank"
       >

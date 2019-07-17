@@ -1,6 +1,6 @@
-# Next.js PWA Boilerplate
+# Marvel Comics PWA
 
-Next.js PWA Boilerplate starts your progressive web app off with a perfect Google Lighthouse score. To see this in action, open [the website](https://next-pwa-boilerplate.now.sh) with Chrome, go to the “Audits” tab in dev tools, and click “Run audit”.
+Explore the characters of Marvel Comics. [Visit now.](marvel-pwa.now.sh)
 
 ## Technologies Used
 
@@ -15,7 +15,7 @@ Next.js PWA Boilerplate starts your progressive web app off with a perfect Googl
 
 Must have [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Node.js](https://nodejs.org/en/) installed:
 
-1. `git clone https://github.com/pingboard/next-pwa-boilerplate`
+1. `git clone https://github.com/seejamescode/marvel-pwa`
 2. `npm i`
 3. Replace all images in `./static/graphics/` with your desired app icons, splash screens, and thumbnail for social sharing. If you have Sketch, you can use the artboards included in `./graphics.sketch`. Ensure that all replacement graphics include the same filenames, file type, and dimensions.
 
@@ -30,7 +30,7 @@ Must have [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) a
 1. Make an account on [ZEIT](https://zeit.co).
 2. Install Zeit’s Now CLI: `npm install -g now`
 3. Change the name and alias on `now.json` to your unique string. If you don’t have a full domain with ZEIT, `yourUniqueString.now.sh` will the domain.
-4. Replace the `next-pwa-boilerplate` inside `https://next-pwa-boilerplate.now.sh` in `./pages/_document.js` with the same string as the previous step.
+4. Replace the `marvel-pwa` inside `https://marvel-pwa.now.sh` in `./pages/_document.js` with the same string as the previous step.
 
 ### Deploy
 

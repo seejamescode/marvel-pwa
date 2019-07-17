@@ -1,10 +1,9 @@
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-export const title = "Next.js PWA Boilerplate";
-const description =
-  "Next.js PWA Boilerplate starts your progressive web app off with a perfect Google Lighthouse score.";
-const url = `https://next-pwa-boilerplate.now.sh`;
+export const title = "Marvel PWA";
+const description = "Explore the characters of Marvel Comics.";
+const url = `https://marvel-pwa.now.sh`;
 const thumbnail = `${url}/static/graphics/thumbnail.png`;
 
 export default class MyDocument extends Document {
