@@ -1,0 +1,34 @@
+{
+  "name": "next-pwa-boilerplate",
+  "version": "1.3.0",
+  "description": "Start your progressive web app off with a perfect Google Lighthouse score.",
+  "main": "server/index.js",
+  "scripts": {
+    "build": "next build",
+    "deploy": "now --target production",
+    "dev": "next",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pingboard/next-pwa-boilerplate.git"
+  },
+  "author": "James Y Rauhut <james@seejamescode.com> (https://seejamescode.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pingboard/next-pwa-boilerplate/issues"
+  },
+  "homepage": "https://next-pwa-boilerplate.now.sh",
+  "dependencies": {
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.0.2",
+    "next-offline": "^4.0.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.6"
+  }
+}
