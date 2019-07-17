@@ -3,6 +3,10 @@
   "name": "marvel",
   "alias": ["marvel-pwa"],
   "builds": [{ "src": "package.json", "use": "@now/next" }],
+  "env": {
+    "MARVEL_KEY_PUBLIC": "@marvel-key-public",
+    "MARVEL_KEY_PRIVATE": "@marvel-key-private"
+  },
   "routes": [
     {
       "src": "^/service-worker.js$",

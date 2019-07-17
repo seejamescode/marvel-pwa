@@ -2,30 +2,26 @@ import Link from "next/link";
 import styled from "styled-components";
 import { title } from "../pages/_document";
 
-const Container = styled.nav`
-  background: #ddd;
-`;
-
 const Content = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
   max-width: var(--max-width);
-  padding: 0 var(--padding);
+  padding: var(--padding);
 `;
 
 const Credits = styled.a`
-  margin: 0.5rem 0;
+  margin: 0;
 `;
 
 const H1 = styled.h1`
   font-size: 1rem;
-  margin: 0.5rem 0;
+  margin: 0;
 `;
 
 const Nav = () => (
-  <Container>
+  <nav>
     <Content>
       <Link as={`/`} href={`/`}>
         <H1>
@@ -37,10 +33,10 @@ const Nav = () => (
         rel="noopener noreferrer"
         target="_blank"
       >
-        Repo
+        Source code
       </Credits>
     </Content>
-  </Container>
+  </nav>
 );
 
 export default Nav;

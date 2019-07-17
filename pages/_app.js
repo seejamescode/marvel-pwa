@@ -12,16 +12,25 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background: var(--background--1);
-    font-family: 'PT Sans', sans-serif;
+    background: rgb(21,19,19);
+    font-family: Roboto, sans-serif;
     margin: 0;
+
+    * {
+      color: white;
+    }
+  }
+
+  a {
+    text-decoration: none;
   }
 `;
 
 const Main = styled.main`
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   max-width: var(--max-width);
-  padding: var(--padding);
 `;
 
 export default class MyApp extends App {
