@@ -22,7 +22,10 @@ const Character = ({
     <h1>{name}</h1>
     {description && <p>{description.replace(/ï¿½/g, "’")}</p>}
     {!path.includes("image_not_available") && (
-      <Img src={`${path}.${extension}`} />
+      <Img
+        alt={name}
+        src={`/api/image/${encodeURIComponent(`${path}.${extension}`)}`}
+      />
     )}
     <h2>Comic appearences</h2>
     {items.length > 0 ? (

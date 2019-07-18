@@ -2,8 +2,9 @@ import Link from "next/link";
 import styled from "styled-components";
 import { title } from "../pages/_document";
 
-const Content = styled.div`
+const Content = styled.nav`
   align-items: center;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
@@ -21,22 +22,20 @@ const H1 = styled.h1`
 `;
 
 const Nav = () => (
-  <nav>
-    <Content>
-      <Link as={`/`} href={`/`}>
-        <H1>
-          <a href="/">{title}</a>
-        </H1>
-      </Link>
-      <Credits
-        href="https://github.com/seejamescode/marvel-pwa"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Source code
-      </Credits>
-    </Content>
-  </nav>
+  <Content>
+    <Link as={`/`} href={`/`}>
+      <H1>
+        <a href="/">{title}</a>
+      </H1>
+    </Link>
+    <Credits
+      href="https://github.com/seejamescode/marvel-pwa"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Source code
+    </Credits>
+  </Content>
 );
 
 export default Nav;

@@ -1,4 +1,4 @@
-import react, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import styled, { css, keyframes } from "styled-components";
@@ -38,6 +38,13 @@ const Button = styled.button`
   }
 `;
 
+const Form = styled.div`
+  margin: auto;
+  max-width: 30rem;
+  position: relative;
+  width: 100%;
+`;
+
 const Grid = styled.div`
   display: grid;
   grid-auto-rows: 1fr;
@@ -67,9 +74,10 @@ const Grid = styled.div`
 
 const HoverTile = styled.div`
   background: black;
+  box-sizing: border-box;
   height: 100%;
   left: 0;
-  opacity: 0;
+  opacity: 0.8;
   padding: var(--padding);
   position: absolute;
   top: 0;
@@ -83,8 +91,6 @@ const Input = styled.input`
   box-sizing: border-box;
   color: black;
   font-size: 1rem;
-  margin: auto;
-  max-width: 30rem;
   padding: calc(var(--padding) / 2);
   width: 100%;
 
@@ -103,6 +109,21 @@ const Search = styled.section`
   grid-gap: var(--padding);
   margin: calc(6 * var(--padding)) auto;
   width: calc(100% - 2 * var(--padding));
+`;
+
+const SearchButton = styled(Button)`
+  border-bottom-right-radius: 2rem;
+  border-top-right-radius: 2rem;
+  height: 100%;
+  margin: 0;
+  padding: 0 var(--padding);
+  position: absolute;
+  right: 0;
+
+  :focus,
+  :hover {
+    color: black;
+  }
 `;
 
 const Shield = styled.img`
@@ -126,7 +147,7 @@ const Tile = styled.a`
     outline: none;
 
     > * {
-      opacity: 0.8;
+      opacity: 0.6;
     }
   }
 
@@ -150,17 +171,22 @@ const getSearch = async ({ baseUrl = "", search = "" }) => {
 };
 
 const Index = ({ initialCharacters }) => {
+  const refInput = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const [characters, setCharacters] = useState(initialCharacters);
   const [fetching, setFetching] = useState(false);
   const [page, setPage] = useState(2);
 
+  const clearSearch = () => {
+    setCharacters([]);
+    setSearchTerm("");
+    setPage(1);
+    getMoreCharacters();
+  };
+
   const getMoreCharacters = useCallback(async () => {
     setFetching(true);
-    if (page === 1) {
-      setSearchTerm("");
-    }
     const newCharacters = await getCharacters({ page });
     setCharacters(
       page === 1 ? newCharacters : [...characters, ...newCharacters]
@@ -169,7 +195,7 @@ const Index = ({ initialCharacters }) => {
     setPage(page + 1);
   }, [page]);
 
-  const searchCharacters = async ({ debouncedSearchArtistsTerm }) => {
+  const searchCharacters = async () => {
     setFetching(true);
     setSearchTerm(debouncedSearchTerm);
     const newCharacters = await getSearch({ search: debouncedSearchTerm });
@@ -181,22 +207,32 @@ const Index = ({ initialCharacters }) => {
   useEffect(() => {
     if (debouncedSearchTerm) {
       searchCharacters({ debouncedSearchTerm });
-    } else {
-      getMoreCharacters();
     }
   }, [debouncedSearchTerm]);
 
   return (
     <>
       <Search>
-        <Shield fetching={fetching} src="/static/graphics/transparent.png" />
-        <Input
-          aria-label="Search characters"
-          onChange={e => setSearchTerm(e.target.value)}
-          placeholder="Search characters"
-          type="text"
-          value={searchTerm}
+        <Shield
+          alt="Captain America’s shield"
+          fetching={fetching}
+          src="/static/graphics/transparent.png"
         />
+        <Form>
+          <Input
+            aria-label="Search characters"
+            onChange={e => setSearchTerm(e.target.value)}
+            placeholder="Search characters"
+            ref={refInput}
+            type="text"
+            value={searchTerm}
+          />
+          <SearchButton
+            onClick={() => setDebouncedSearchTerm(refInput.current.value)}
+          >
+            Search
+          </SearchButton>
+        </Form>
       </Search>
       <Grid>
         {characters.map(({ id, name, thumbnail: { extension, path } }) => (
@@ -210,7 +246,11 @@ const Index = ({ initialCharacters }) => {
               aria-label={name}
               name={name}
               style={{
-                backgroundImage: `url(${path}.${extension})`
+                backgroundImage:
+                  !path.includes("image_not_available") &&
+                  `url(/api/image/${encodeURIComponent(
+                    `${path}.${extension})`
+                  )}`
               }}
             >
               <HoverTile>{name}</HoverTile>
@@ -244,9 +284,7 @@ const Index = ({ initialCharacters }) => {
           <Button
             disabled={fetching}
             onClick={() =>
-              debouncedSearchTerm !== ""
-                ? getMoreCharacters(1)
-                : getMoreCharacters(page)
+              debouncedSearchTerm !== "" ? clearSearch() : getMoreCharacters()
             }
           >
             {debouncedSearchTerm !== "" ? "Undo search" : "See more characters"}
