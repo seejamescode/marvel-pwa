@@ -1,19 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import getBaseURL from "../utils/get-base-url";
 import useDebounce from "../components/useDebounce";
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`;
 
 const Button = styled.button`
   && {
@@ -36,13 +26,6 @@ const Button = styled.button`
       outline: none;
     }
   }
-`;
-
-const Form = styled.div`
-  margin: auto;
-  max-width: 30rem;
-  position: relative;
-  width: 100%;
 `;
 
 const Grid = styled.div`
@@ -91,7 +74,10 @@ const Input = styled.input`
   box-sizing: border-box;
   color: black;
   font-size: 1rem;
+  margin: auto;
+  max-width: 30rem;
   padding: calc(var(--padding) / 2);
+  position: relative;
   width: 100%;
 
   :hover {
@@ -111,24 +97,7 @@ const Search = styled.section`
   width: calc(100% - 2 * var(--padding));
 `;
 
-const SearchButton = styled(Button)`
-  border-bottom-right-radius: 2rem;
-  border-top-right-radius: 2rem;
-  height: 100%;
-  margin: 0;
-  padding: 0 var(--padding);
-  position: absolute;
-  right: 0;
-
-  :focus,
-  :hover {
-    color: black;
-  }
-`;
-
 const Shield = styled.img`
-  animation: ${rotate} 500ms linear infinite;
-  animation-iteration-count: ${({ fetching }) => (fetching ? "infinite" : 1)};
   height: 10rem;
   margin: auto;
   width: 10rem;
@@ -171,7 +140,7 @@ const getSearch = async ({ baseUrl = "", search = "" }) => {
 };
 
 const Index = ({ initialCharacters }) => {
-  const refInput = useRef();
+  const refMounted = useRef(false);
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const [characters, setCharacters] = useState(initialCharacters);
@@ -205,34 +174,52 @@ const Index = ({ initialCharacters }) => {
   };
 
   useEffect(() => {
-    if (debouncedSearchTerm) {
-      searchCharacters({ debouncedSearchTerm });
+    if (refMounted.current) {
+      if (debouncedSearchTerm) {
+        searchCharacters({ debouncedSearchTerm });
+      } else {
+        clearSearch();
+      }
+    } else {
+      refMounted.current = true;
     }
   }, [debouncedSearchTerm]);
 
   return (
     <>
+      <style>{`
+        @keyframes rotate {
+          from {
+            transform: rotate(0deg);
+          }
+
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
       <Search>
-        <Shield
-          alt="Captain America’s shield"
-          fetching={fetching}
-          src="/static/graphics/transparent.png"
-        />
-        <Form>
-          <Input
-            aria-label="Search characters"
-            onChange={e => setSearchTerm(e.target.value)}
-            placeholder="Search characters"
-            ref={refInput}
-            type="text"
-            value={searchTerm}
+        {fetching ? (
+          <Shield
+            alt="Captain America’s shield"
+            src="/static/graphics/transparent.png"
+            style={{
+              animation: fetching && `rotate 500ms linear infinite`
+            }}
           />
-          <SearchButton
-            onClick={() => setDebouncedSearchTerm(refInput.current.value)}
-          >
-            Search
-          </SearchButton>
-        </Form>
+        ) : (
+          <Shield
+            alt="Captain America’s shield"
+            src="/static/graphics/transparent.png"
+          />
+        )}
+        <Input
+          aria-label="Search characters"
+          onChange={e => setSearchTerm(e.target.value)}
+          placeholder="Search characters"
+          type="text"
+          value={searchTerm}
+        />
       </Search>
       <Grid>
         {characters.map(({ id, name, thumbnail: { extension, path } }) => (
