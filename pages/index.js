@@ -1,129 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
-import styled from "styled-components";
 import getBaseURL from "../utils/get-base-url";
+import Button from "../components/Button";
+import Grid from "../components/Grid";
+import HoverTile from "../components/HoverTile";
+import Input from "../components/Input";
+import Search from "../components/Search";
+import Shield from "../components/Shield";
+import Tile from "../components/Tile";
 import useDebounce from "../components/useDebounce";
-
-const Button = styled.button`
-  && {
-    background: rgba(21, 9, 107, 1);
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    grid-column: 1 / -1;
-
-    :active {
-      background: rgba(21, 9, 107, 0.4);
-    }
-
-    :hover {
-      background: rgba(21, 9, 107, 0.2);
-    }
-
-    :focus {
-      background: rgba(21, 9, 107, 0.3);
-      outline: none;
-    }
-  }
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-auto-rows: 1fr;
-  grid-gap: 1px;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(calc(6 * var(--padding)), 1fr)
-  );
-
-  :before {
-    content: "";
-    width: 0;
-    padding-bottom: 100%;
-    grid-row: 1 / 1;
-    grid-column: 1 / 1;
-  }
-
-  > * {
-    background: #8181d8;
-
-    :first-child {
-      grid-row: 1 / 1;
-      grid-column: 1 / 1;
-    }
-  }
-`;
-
-const HoverTile = styled.div`
-  background: black;
-  box-sizing: border-box;
-  height: 100%;
-  left: 0;
-  opacity: 0.8;
-  padding: var(--padding);
-  position: absolute;
-  top: 0;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  background: #cecece;
-  border: none;
-  border-radius: 2rem;
-  box-sizing: border-box;
-  color: black;
-  font-size: 1rem;
-  margin: auto;
-  max-width: 30rem;
-  padding: calc(var(--padding) / 2);
-  position: relative;
-  width: 100%;
-
-  :hover {
-    background: #e4e4e4;
-  }
-
-  :focus {
-    background: #fff;
-    outline: none;
-  }
-`;
-
-const Search = styled.section`
-  display: grid;
-  grid-gap: var(--padding);
-  margin: calc(6 * var(--padding)) auto;
-  width: calc(100% - 2 * var(--padding));
-`;
-
-const Shield = styled.img`
-  height: 10rem;
-  margin: auto;
-  width: 10rem;
-`;
-
-const Tile = styled.a`
-  background-size: cover;
-  overflow: hidden;
-  position: relative;
-
-  :hover > * {
-    opacity: 0.7;
-  }
-
-  :focus {
-    outline: none;
-
-    > * {
-      opacity: 0.6;
-    }
-  }
-
-  :active > * {
-    opacity: 1;
-  }
-`;
 
 const getCharacters = async ({ baseUrl = "", page = 1 }) => {
   const charactersFetch = await fetch(`${baseUrl}/api/characters?page=${page}`);
